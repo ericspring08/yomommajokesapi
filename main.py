@@ -6,11 +6,34 @@ from flask_cors import CORS
 jokes = json.load(open('./jokes.json',))
 app = Flask(__name__)
 CORS(app)
-@app.route("/fat", methods=["GET"])
+
+categories_list = ("fat", "stupid", "ugly", "nasty", "old", "hairy", "poor", "short", "skinny", "tall")
+@app.route("/")
+def index():
+    category = random.choice(categories_list)
+    return jsonify({"jokes": random.choice(jokes[category])})
+
+@app.route("/categories")
+def categories():
+    return {
+        "categories": [
+            "fat", 
+            "stupid", 
+            "ugly", 
+            "nasty", 
+            "old", 
+            "hairy", 
+            "poor", 
+            "short", 
+            "skinny", 
+            "tall"
+        ]
+    }
+
+@app.route("/fat")
 def fat():
-    response = jsonify({"jokes" : random.choice(jokes["fat"])})
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return jsonify({"jokes" : random.choice(jokes["fat"])})
+
 
 @app.route("/stupid")
 
